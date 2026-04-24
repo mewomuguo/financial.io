@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>FINCALANCE - 個人財務現金流規劃</title>
+  <meta name="description" content="個人財務現金流規劃與信用卡還款預測分析工具" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="header-inner">
+      <h1 class="logo">FINCALANCE</h1>
+      <p class="tagline">現金流規劃 ＋ 信用卡還款預測</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- 收入設定 -->
+    <section class="card" id="incomeSection">
+      <h2 class="card-title"><span class="icon">💰</span> 收入設定</h2>
+      <div id="incomeList"></div>
+      <button type="button" class="btn btn-outline" id="addIncomeBtn">＋ 新增收入</button>
+      <div class="form-grid mt-1">
+        <div class="field">
+          <label for="initialCash">手邊現金</label>
+          <div class="input-group">
+            <input type="number" id="initialCash" value="0" min="0" step="1000" />
+            <span class="suffix">NTD</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 信用卡設定 -->
+    <section class="card" id="creditCardSection">
+      <h2 class="card-title"><span class="icon">💳</span> 信用卡設定</h2>
+      <div id="cardList"></div>
+      <button type="button" class="btn btn-outline" id="addCardBtn">＋ 新增信用卡</button>
+      <div class="form-grid mt-1">
+        <div class="field">
+          <label for="monthlySpend">每月新增刷卡消費</label>
+          <div class="input-group">
+            <input type="number" id="monthlySpend" value="0" min="0" step="1000" />
+            <span class="suffix">NTD</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 固定支出 -->
+    <section class="card" id="expenseSection">
+      <h2 class="card-title"><span class="icon">🏠</span> 固定支出</h2>
+      <div id="expenseList"></div>
+      <button type="button" class="btn btn-outline" id="addExpenseBtn">＋ 新增固定支出</button>
+    </section>
+
+    <!-- 貸款設定 -->
+    <section class="card" id="loanSection">
+      <h2 class="card-title"><span class="icon">🏦</span> 貸款設定</h2>
+      <div class="form-grid">
+        <div class="field">
+          <label for="loanTotal">貸款總金額</label>
+          <div class="input-group">
+            <input type="number" id="loanTotal" value="0" min="0" step="1000" />
+            <span class="suffix">NTD</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="loanMonthlyPayment">每月還款金額</label>
+          <div class="input-group">
+            <input type="number" id="loanMonthlyPayment" value="0" min="0" step="500" />
+            <span class="suffix">NTD</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="loanPayDay">貸款扣款日</label>
+          <div class="input-group">
+            <input type="number" id="loanPayDay" value="1" min="1" max="31" />
+            <span class="suffix">日</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 目標設定 -->
+    <section class="card" id="goalSection">
+      <h2 class="card-title"><span class="icon">🎯</span> 目標設定</h2>
+      <div class="form-grid">
+        <div class="field">
+          <label for="targetMonths">目標月份</label>
+          <div class="input-group">
+            <input type="number" id="targetMonths" value="36" min="1" max="120" />
+            <span class="suffix">個月</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="targetBalance">目標信用卡餘額</label>
+          <div class="input-group">
+            <input type="number" id="targetBalance" value="0" min="0" step="1000" />
+            <span class="suffix">NTD</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="savingsGoal">每月儲蓄目標</label>
+          <div class="input-group">
+            <input type="number" id="savingsGoal" value="0" min="0" step="500" />
+            <span class="suffix">NTD</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <button type="button" class="btn btn-primary btn-generate" id="generateBtn">📊 產生還款報告</button>
+
+    <div id="exportBar" class="export-bar hidden">
+      <button type="button" class="btn btn-export btn-md" id="exportMdBtn">📝 下載 Markdown</button>
+      <button type="button" class="btn btn-export btn-pdf" id="exportPdfBtn">📄 下載 PDF</button>
+    </div>
+
+    <div id="reportOutput" class="report-container hidden"></div>
+
+  </main>
+
+  <footer class="app-footer">
+    <p>FINCALANCE © 2026 — 僅供數字分析參考，不構成財務建議</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
