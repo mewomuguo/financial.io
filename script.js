@@ -14,9 +14,9 @@ function renderIncomes(){
   const el=$('incomeList');el.innerHTML='';
   incomes.forEach((inc,i)=>{
     const r=document.createElement('div');r.className='income-row';
-    r.innerHTML=`<div class="field"><label>名稱</label><div class="input-group"><input type="text" value="${inc.name}" data-i="${i}" data-f="name" class="inc-in"></div></div>
+    r.innerHTML=`<div class="field"><label>收入來源</label><div class="input-group"><input type="text" value="${inc.name}" data-i="${i}" data-f="name" class="inc-in"></div></div>
     <div class="field"><label>發薪日</label><div class="input-group"><input type="number" value="${inc.day}" min="1" max="31" data-i="${i}" data-f="day" class="inc-in"><span class="suffix">日</span></div></div>
-    <div class="field"><label>金額</label><div class="input-group"><input type="number" value="${inc.amount}" min="0" data-i="${i}" data-f="amount" class="inc-in"><span class="suffix">NTD</span></div></div>
+    <div class="field"><label>每月金額</label><div class="input-group"><input type="number" value="${inc.amount}" min="0" data-i="${i}" data-f="amount" class="inc-in"><span class="suffix">NTD</span></div></div>
     <button type="button" class="remove-btn" data-i="${i}">✕</button>`;
     el.appendChild(r);
   });
@@ -32,7 +32,8 @@ function renderCards(){
   creditCards.forEach((c,i)=>{
     const r=document.createElement('div');r.className='card-row';
     r.innerHTML=`<div class="field"><label>卡名</label><div class="input-group"><input type="text" value="${c.name}" data-i="${i}" data-f="name" class="cc-in"></div></div>
-    <div class="field"><label>餘額</label><div class="input-group"><input type="number" value="${c.balance}" min="0" data-i="${i}" data-f="balance" class="cc-in"><span class="suffix">NTD</span></div></div>
+    <div class="field"><label>目前欠款金額</label><div class="input-group"><input type="number" value="${c.balance}" min="0" data-i="${i}" data-f="balance" class="cc-in"><span class="suffix">NTD</span></div></div>
+
     <div class="field"><label>繳款日</label><div class="input-group"><input type="number" value="${c.payDay}" min="1" max="31" data-i="${i}" data-f="payDay" class="cc-in"><span class="suffix">日</span></div></div>
     <div class="field"><label>年利率</label><div class="input-group"><input type="number" value="${c.rate}" min="0" max="30" step="0.1" data-i="${i}" data-f="rate" class="cc-in"><span class="suffix">%</span></div></div>
     <button type="button" class="remove-btn" data-i="${i}">✕</button>`;
@@ -50,12 +51,12 @@ function renderExpenses(){
   expenses.forEach((ex,i)=>{
     const r=document.createElement('div');r.className='expense-row';
     const nameCell=ex.preset
-      ?`<div class="field"><label>名稱</label><div class="preset-name"><span class="lock-icon">🔒</span>${ex.name}</div></div>`
-      :`<div class="field"><label>名稱</label><div class="input-group"><input type="text" value="${ex.name}" data-i="${i}" data-f="name" class="ex-in"></div></div>`;
+      ?`<div class="field"><label>支出項目</label><div class="preset-name"><span class="lock-icon">🔒</span>${ex.name}</div></div>`
+      :`<div class="field"><label>支出項目</label><div class="input-group"><input type="text" value="${ex.name}" data-i="${i}" data-f="name" class="ex-in"></div></div>`;
     const delBtn=ex.preset?`<div style="width:32px"></div>`:`<button type="button" class="remove-btn" data-i="${i}">✕</button>`;
     r.innerHTML=`${nameCell}
     <div class="field"><label>扣款日</label><div class="input-group"><input type="number" value="${ex.day}" min="1" max="31" data-i="${i}" data-f="day" class="ex-in"><span class="suffix">日</span></div></div>
-    <div class="field"><label>金額</label><div class="input-group"><input type="number" value="${ex.amount}" min="0" data-i="${i}" data-f="amount" class="ex-in"><span class="suffix">NTD</span></div></div>
+    <div class="field"><label>每月金額</label><div class="input-group"><input type="number" value="${ex.amount}" min="0" data-i="${i}" data-f="amount" class="ex-in"><span class="suffix">NTD</span></div></div>
     <div class="field"><label>到期日</label><div class="input-group"><input type="date" value="${ex.expiry||''}" data-i="${i}" data-f="expiry" class="ex-in"></div></div>
     ${delBtn}`;
     el.appendChild(r);
@@ -153,17 +154,17 @@ function generateReport(){
   // 1. Overview
   h+=`<section class="report-section"><h3>📋 基本概覽</h3>
   <div class="summary-bar"><div class="summary-item"><div class="label">每月總收入</div><div class="value green">${fmt(mi)}</div></div>
-  <div class="summary-item"><div class="label">信用卡總餘額</div><div class="value red">${fmt(tcb)}</div></div></div>
+  <div class="summary-item"><div class="label">信用卡總欠款</div><div class="value red">${fmt(tcb)}</div></div></div>
   <div class="summary-bar tri"><div class="summary-item"><div class="label">每月固定支出</div><div class="value amber">${fmt(tf)}</div></div>
   <div class="summary-item"><div class="label">需月還信用卡</div><div class="value blue">${fmt(rcc)}</div></div>
   <div class="summary-item"><div class="label">月結餘可支配</div><div class="value ${disp>=0?'green':'red'}">${fmt(disp)}</div></div></div>
-  <div class="summary-bar"><div class="summary-item"><div class="label">每月新增刷卡消費</div><div class="value amber">${fmt(ms)}</div></div>
+  <div class="summary-bar"><div class="summary-item"><div class="label">每月預估新增信用卡消費</div><div class="value amber">${fmt(ms)}</div></div>
   <div class="summary-item"><div class="label">首月預估利息</div><div class="value red">${fmt(m1i)}</div></div></div></section>`;
 
   // 2. Month 1
   h+=`<section class="report-section"><h3>📅 第 1 個月還款計畫</h3>`;
   if(cp.length>0){
-    h+=`<table class="report-table"><thead><tr><th>卡片</th><th class="num">起始餘額</th><th class="num">繳款日</th><th class="num">年利率</th><th class="num">＋新增消費</th><th class="num">本月還款</th></tr></thead><tbody>`;
+    h+=`<table class="report-table"><thead><tr><th>卡片</th><th class="num">起始欠款</th><th class="num">繳款日</th><th class="num">年利率</th><th class="num">＋新增消費</th><th class="num">本月還款</th></tr></thead><tbody>`;
     cp.forEach(c=>{
       const ratio=tcb>0?c.balance/tcb:1/cp.length;
       const cardSpend=Math.round(ms*ratio);
@@ -200,12 +201,12 @@ function generateReport(){
     const m24=proj.find(p=>p.month===24);
     if(m24){const pct=Math.max(0,Math.min(100,Math.round((1-m24.endBal/tcb)*100)));
       h+=`<h4 style="font-size:0.85rem;margin-bottom:0.5rem;color:var(--text-secondary)">第 24 個月</h4>
-      <div class="summary-bar"><div class="summary-item"><div class="label">預測餘額</div><div class="value ${m24.endBal<=tb?'green':'amber'}">${fmt(m24.endBal)}</div></div>
+      <div class="summary-bar"><div class="summary-item"><div class="label">預測欠款</div><div class="value ${m24.endBal<=tb?'green':'amber'}">${fmt(m24.endBal)}</div></div>
       <div class="summary-item"><div class="label">已償還</div><div class="value blue">${pct}%</div></div></div>
       <div class="progress-wrap"><div class="progress-label"><span>起始 ${fmt(tcb)}</span><span>目標 ${fmt(tb)}</span></div><div class="progress-bar"><div class="progress-fill ${pct>=60?'on-track':'behind'}" style="width:${pct}%"></div></div></div>`;}
     const pf=Math.max(0,Math.min(100,Math.round((1-fm.endBal/tcb)*100)));
     h+=`<h4 style="font-size:0.85rem;margin-top:1.2rem;margin-bottom:0.5rem;color:var(--text-secondary)">第 ${tm} 個月（目標月）</h4>
-    <div class="summary-bar"><div class="summary-item"><div class="label">預測餘額</div><div class="value ${ot?'green':'red'}">${fmt(fm.endBal)}</div></div>
+    <div class="summary-bar"><div class="summary-item"><div class="label">預測欠款</div><div class="value ${ot?'green':'red'}">${fmt(fm.endBal)}</div></div>
     <div class="summary-item"><div class="label">達標狀態</div><div class="value"><span class="badge ${ot?'success':'danger'}">${ot?'✓ 達標':'✗ 未達標'}</span></div></div></div>
     <div class="progress-wrap"><div class="progress-label"><span>起始 ${fmt(tcb)}</span><span>目標 ${fmt(tb)}</span></div><div class="progress-bar"><div class="progress-fill ${ot?'on-track':'behind'}" style="width:${pf}%"></div></div></div>`;
     if(fm.cumInt>0){const ip=rcc*tm>0?Math.round(fm.cumInt/(rcc*tm)*100):0;
@@ -216,7 +217,7 @@ function generateReport(){
 
   // 4. Monthly table
   if(proj.length>0){
-    h+=`<section class="report-section"><h3>📊 逐月預測表</h3><div class="projection-scroll"><table class="report-table"><thead><tr><th>月份</th><th class="num">月初餘額</th><th class="num">＋新增消費</th><th class="num">＋利息</th><th class="num">－還款</th><th class="num">月底餘額</th></tr></thead><tbody>`;
+    h+=`<section class="report-section"><h3>📊 逐月預測表</h3><div class="projection-scroll"><table class="report-table"><thead><tr><th>月份</th><th class="num">月初欠款</th><th class="num">＋新增消費</th><th class="num">＋利息</th><th class="num">－還款</th><th class="num">月底欠款</th></tr></thead><tbody>`;
     proj.forEach(p=>{
       const hl=p.month===24?'background:rgba(56,132,244,0.08);':'';
       h+=`<tr style="${hl}"><td>${p.month}</td><td class="num">${fmt(p.startBal)}</td><td class="num" style="color:var(--accent-red)">+${fmt(p.spend)}</td><td class="num" style="color:var(--accent-amber)">+${fmt(p.interest)}</td><td class="num" style="color:var(--accent-green)">-${fmt(p.payment)}</td><td class="num" style="font-weight:600">${fmt(p.endBal)}</td></tr>`;
@@ -233,11 +234,11 @@ function generateReport(){
 // ── MD Export ──
 $('exportMdBtn').addEventListener('click',()=>{
   if(!lastReportData)return;const d=lastReportData;
-  let md=`# FINCALANCE 還款報告\n\n生成日期：${now.toLocaleDateString('zh-TW')}\n\n`;
+  let md=`# FINANCIAL 財務報告\n\n生成日期：${now.toLocaleDateString('zh-TW')}\n\n`;
   md+=`## 📋 基本概覽\n\n| 項目 | 金額 |\n|---|---:|\n`;
-  md+=`| 每月總收入 | ${fmt(d.mi)} |\n| 信用卡總餘額 | ${fmt(d.tcb)} |\n| 每月固定支出 | ${fmt(d.tf)} |\n| 需月還信用卡 | ${fmt(d.rcc)} |\n| 月結餘可支配 | ${fmt(d.disp)} |\n| 每月新增刷卡消費 | ${fmt(d.ms)} |\n| 首月預估利息 | ${fmt(d.m1i)} |\n\n`;
+  md+=`| 每月總收入 | ${fmt(d.mi)} |\n| 信用卡總欠款 | ${fmt(d.tcb)} |\n| 每月固定支出 | ${fmt(d.tf)} |\n| 需月還信用卡 | ${fmt(d.rcc)} |\n| 月結餘可支配 | ${fmt(d.disp)} |\n| 每月預估新增信用卡消費 | ${fmt(d.ms)} |\n| 首月預估利息 | ${fmt(d.m1i)} |\n\n`;
   if(d.cp.length>0){
-    md+=`## 📅 第 1 個月還款計畫\n\n| 卡片 | 起始餘額 | 繳款日 | 年利率 | 本月還款 |\n|---|---:|---:|---:|---:|\n`;
+    md+=`## 📅 第 1 個月還款計畫\n\n| 卡片 | 起始欠款 | 繳款日 | 年利率 | 本月還款 |\n|---|---:|---:|---:|---:|\n`;
     d.cp.forEach(c=>{md+=`| ${c.name} | ${fmt(c.balance)} | ${c.payDay}日 | ${c.rate}% | ${fmt(c.payment)} |\n`;});md+=`\n`;
   }
   if(d.alloc.length>0){
@@ -250,26 +251,26 @@ $('exportMdBtn').addEventListener('click',()=>{
   }
   md+=`### 現金最低點\n\n第 ${d.minD} 日：${fmt(Math.round(d.minC))}\n\n`;
   if(d.proj.length>0&&d.tcb>0){
-    md+=`## 📈 還款預測\n\n| 月份 | 預測餘額 | 達標 |\n|---|---:|---:|\n`;
+    md+=`## 📈 還款預測\n\n| 月份 | 預測欠款 | 達標 |\n|---|---:|---:|\n`;
     const m24=d.proj.find(p=>p.month===24);if(m24)md+=`| 第 24 個月 | ${fmt(m24.endBal)} | ${m24.endBal<=d.tb?'✓':'✗'} |\n`;
     md+=`| 第 ${d.tm} 個月 | ${fmt(d.fm.endBal)} | ${d.ot?'✓ 達標':'✗ 未達標'} |\n\n`;
     if(d.fm.cumInt>0)md+=`累計利息支出：${fmt(d.fm.cumInt)}\n\n`;
   }
   if(d.proj.length>0){
-    md+=`## 📊 逐月預測表\n\n| 月份 | 月初餘額 | ＋新增消費 | ＋利息 | －還款 | 月底餘額 |\n|---|---:|---:|---:|---:|---:|\n`;
+    md+=`## 📊 逐月預測表\n\n| 月份 | 月初欠款 | ＋新增消費 | ＋利息 | －還款 | 月底欠款 |\n|---|---:|---:|---:|---:|---:|\n`;
     d.proj.forEach(p=>{md+=`| ${p.month} | ${fmt(p.startBal)} | +${fmt(p.spend)} | +${fmt(p.interest)} | -${fmt(p.payment)} | ${fmt(p.endBal)} |\n`;});
   }
-  md+=`\n---\n*FINCALANCE © 2026 — 僅供數字分析參考，不構成財務建議*\n`;
+
   const blob=new Blob([md],{type:'text/markdown;charset=utf-8'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);
-  a.download=`FINCALANCE_報告_${now.toISOString().slice(0,10)}.md`;a.click();URL.revokeObjectURL(a.href);
+  a.download=`FINANCIAL_財務報告_${now.toISOString().slice(0,10)}.md`;a.click();URL.revokeObjectURL(a.href);
 });
 
 // ── PDF Export ──
 $('exportPdfBtn').addEventListener('click',()=>{
   const el=$('reportOutput');if(el.classList.contains('hidden'))return;
-  html2pdf().set({margin:[10,10,10,10],filename:`FINCALANCE_報告_${now.toISOString().slice(0,10)}.pdf`,
-    image:{type:'jpeg',quality:0.98},html2canvas:{scale:2,backgroundColor:'#0b0e14',useCORS:true},
+  html2pdf().set({margin:[10,10,10,10],filename:`FINANCIAL_財務報告_${now.toISOString().slice(0,10)}.pdf`,
+    image:{type:'jpeg',quality:0.98},html2canvas:{scale:2,backgroundColor:'#f8f6f1',useCORS:true},
     jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}}).from(el).save();
 });
 

@@ -3,11 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>FINCALANCE - 個人財務現金流規劃</title>
-  <meta name="description" content="個人財務現金流規劃與信用卡還款預測分析工具" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <title>FINANCIAL — 現金流規劃</title>
+  <meta name="description" content="FINANCIAL 個人財務現金流規劃工具" />
+
   <link rel="stylesheet" href="styles.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
 </head>
@@ -15,8 +13,8 @@
 
   <header class="app-header">
     <div class="header-inner">
-      <h1 class="logo">FINCALANCE</h1>
-      <p class="tagline">現金流規劃 ＋ 信用卡還款預測</p>
+      <h1 class="logo">FINANCIAL</h1>
+      <p class="tagline">現金流規劃</p>
     </div>
   </header>
 
@@ -29,7 +27,7 @@
       <button type="button" class="btn btn-outline" id="addIncomeBtn">＋ 新增收入</button>
       <div class="form-grid mt-1">
         <div class="field">
-          <label for="initialCash">手邊現金</label>
+          <label for="initialCash">目前可用現金</label>
           <div class="input-group">
             <input type="number" id="initialCash" value="0" min="0" step="1000" />
             <span class="suffix">NTD</span>
@@ -45,7 +43,7 @@
       <button type="button" class="btn btn-outline" id="addCardBtn">＋ 新增信用卡</button>
       <div class="form-grid mt-1">
         <div class="field">
-          <label for="monthlySpend">每月新增刷卡消費</label>
+          <label for="monthlySpend">每月預估新增信用卡消費</label>
           <div class="input-group">
             <input type="number" id="monthlySpend" value="0" min="0" step="1000" />
             <span class="suffix">NTD</span>
@@ -66,7 +64,7 @@
       <h2 class="card-title"><span class="icon">🏦</span> 貸款設定</h2>
       <div class="form-grid">
         <div class="field">
-          <label for="loanTotal">貸款總金額</label>
+          <label for="loanTotal">目前貸款剩餘本金</label>
           <div class="input-group">
             <input type="number" id="loanTotal" value="0" min="0" step="1000" />
             <span class="suffix">NTD</span>
@@ -87,7 +85,7 @@
           </div>
         </div>
         <div class="field">
-          <label for="loanEndDate">貸款結束日</label>
+          <label for="loanEndDate">預計結清日</label>
           <div class="input-group">
             <input type="date" id="loanEndDate" value="" />
           </div>
@@ -107,7 +105,7 @@
           </div>
         </div>
         <div class="field">
-          <label for="targetBalance">目標信用卡餘額</label>
+          <label for="targetBalance">目標信用卡欠款總額</label>
           <div class="input-group">
             <input type="number" id="targetBalance" value="0" min="0" step="1000" />
             <span class="suffix">NTD</span>
@@ -123,7 +121,7 @@
       </div>
     </section>
 
-    <button type="button" class="btn btn-primary btn-generate" id="generateBtn">📊 產生還款報告</button>
+    <button type="button" class="btn btn-primary btn-generate" id="generateBtn">📊 產生財務報告</button>
 
     <div id="exportBar" class="export-bar hidden">
       <button type="button" class="btn btn-export btn-md" id="exportMdBtn">📝 下載 Markdown</button>
@@ -134,9 +132,7 @@
 
   </main>
 
-  <footer class="app-footer">
-    <p>FINCALANCE © 2026 — 僅供數字分析參考，不構成財務建議</p>
-  </footer>
+
 
   <script src="script.js"></script>
 </body>
