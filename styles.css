@@ -65,6 +65,10 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;b
 .expense-row{grid-template-columns:1fr 0.5fr 0.8fr 1.1fr auto}
 .income-row .field label,.card-row .field label,.expense-row .field label{font-size:0.7rem}
 
+/* Preset expense name (non-editable) */
+.preset-name{display:flex;align-items:center;gap:0.4rem;background:var(--bg-input);border-radius:var(--radius-sm);padding:0.6rem 0.75rem;font-size:0.9rem;font-weight:500;color:var(--text-primary);min-height:38px}
+.preset-name .lock-icon{font-size:0.7rem;color:var(--text-muted);opacity:0.6}
+
 .remove-btn{width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,80,80,0.3);background:rgba(255,80,80,0.08);color:var(--accent-red);font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all var(--transition);margin-bottom:0.1rem}
 .remove-btn:hover{background:rgba(255,80,80,0.2);border-color:rgba(255,80,80,0.5)}
 
